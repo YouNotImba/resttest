@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>YourApp</title>
+<script src="js/jquery-3.2.0.min.js"></script>
+</head>
+<body>
+	<h1>Spring REST</h1>
+	<input type="text" id="data" />
+	<a id="post" href="#">POST</a>
+	<a id="get" href="#">GET</a>
+
+	<div id="container"></div>
+
+	<a href="/jaja">Just main</a>
+	<br></br>
+	Username :<input type="text" id="username" />
+	<br/>
+	Password :<input type="password" id="pass" />
+	<br/>
+	<button id="lgn" name="lgn">Login</button>
+	<br/>
+	<a id="signin" href="#">SignIn</a>
+	<br/>
+	<a id="signin2" href="/restlogin">restLogin</a>
+</body>
+
+<script>
+var $username1 = $('#username');
+var $pass1 = $('#pass');
+$('#lgn').click(function () {
+            $.ajax({
+            type: "POST",
+            cache: false,
+            url: '/login',
+            responce: 'text',
+            data:{'username':$username1.val(),'password':$pass1.val()},
+            success: function (response) {
+            	alert("success");
+            }
+        });
+  
+});
+</script>
+
+<script>
+    $('#get').click(function () {
+        $.ajax({
+            type: "GET",
+            cache: false,
+            url: '/getRandomData',
+            data: "",
+            success: function (response) {
+                var html = "";
+                $.each(response.data, function (i) {
+                    html = html + response.data[i] + "<br/>";
+                });
+                $('#container').html(html);
+            }
+        });
+    });
+
+    $('#post').click(function () {
+        if (!$("#data").val()) {
+            alert("Enter your data!");
+        } else {
+            $.ajax({
+                type: "POST",
+                cache: false,
+                url: '/persist',
+                data: {
+                    'data': $("#data").val()
+                },
+                success: function (response) {
+                    $('#get').click();
+                }
+            });
+        }
+
+    });
+
+</script>
+
+</html>
